@@ -34,6 +34,12 @@ function save() {
 
 
 
+function createTextElement(tag, text) {
+    const element = document.createElement(tag);
+    element.textContent = text;
+    return element;
+}
+
 function render() {
     workoutList.textContent = "";
     let totalCounter = 0;
@@ -70,15 +76,20 @@ function render() {
                 kind = "Other";
         };
 
-        const titleElement = document.createElement("h4");
-        const kindOfElement = document.createElement("p");
-        const minutesElement = document.createElement("p");
-        const noteElement = document.createElement("p");
+        // const titleElement = document.createElement("h4");
+        // const kindOfElement = document.createElement("p");
+        // const minutesElement = document.createElement("p");
+        // const noteElement = document.createElement("p");
 
-        titleElement.textContent = workouts[i].activity;
-        kindOfElement.textContent = kind;
-        minutesElement.textContent = `Time: ${workouts[i].minutes} - ${label}`;
-        noteElement.textContent = workouts[i].note;
+        // titleElement.textContent = workouts[i].activity;
+        // kindOfElement.textContent = kind;
+        // minutesElement.textContent = `Time: ${workouts[i].minutes} - ${label}`;
+        // noteElement.textContent = workouts[i].note;
+
+        const titleElement = createTextElement("h4", workouts[i].activity);
+        const kindOfElement = createTextElement("p". kind);
+        const minutesElement = createTextElement("p", `Time: ${workouts[i].minutes} - ${label}`);
+        const noteElement = createTextElement("p", workouts[i].note);
 
         workoutLi.appendChild(titleElement);
         workoutLi.appendChild(kindOfElement);
