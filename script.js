@@ -7,6 +7,7 @@ const noteInput = document.querySelector("#note");
 const errorText = document.querySelector("#error");
 
 const clearBtn = document.querySelector("#clearBtn");
+const removeLastBtn = document.querySelector("#removeLastBtn");
 
 const workoutList = document.querySelector("#workoutList");
 
@@ -26,31 +27,53 @@ try {
     console.log("Could not read saved workouts");
 };
 
-function save () {
+function save() {
     const workoutsText = JSON.stringify(workouts);
     localStorage.setItem("workouts", workoutsText);
 };
 
 
 
-function render () {
+function render() {
     workoutList.textContent = "";
     let totalCounter = 0;
     let averageCounter = 0;
 
     for (let i = 0; i < workouts.length; i++) {
         const workoutLi = document.createElement("li");
-        const label = workouts[i].minutes > 30 ? "Long" : "Short"; 
+        const label = workouts[i].minutes > 30 ? "Long" : "Short";
+
+        let kind = "";
+
+        switch (workouts[i].activity) {
+            case "run":
+            case "jog":
+            case "walk":
+            case "swim":
+            case "biking":
+                kind = "Cardio";
+                break;
+            case "gym":
+            case "HIIT":
+            case "strength":
+                kind = "Strength"
+                break;
+            default:
+                kind = "Other";
+        };
 
         const titleElement = document.createElement("h4");
+        const kindOfElement = document.createElement("p");
         const minutesElement = document.createElement("p");
         const noteElement = document.createElement("p");
 
         titleElement.textContent = workouts[i].activity;
+        kindOfElement.textContent = kind;
         minutesElement.textContent = `Time: ${workouts[i].minutes} - ${label}`;
         noteElement.textContent = workouts[i].note;
 
         workoutLi.appendChild(titleElement);
+        workoutLi.appendChild(kindOfElement);
         workoutLi.appendChild(minutesElement);
         workoutLi.appendChild(noteElement);
 
@@ -60,7 +83,7 @@ function render () {
 
 
         totalCounter += Number(workouts[i].minutes);
-        averageCounter = totalCounter/workouts.length;
+        averageCounter = totalCounter / workouts.length;
 
         totalText.textContent = `Total minutes of activity: ${totalCounter} min. Average activity duration: ${averageCounter} min.`
     }
@@ -69,7 +92,7 @@ function render () {
 render();
 
 
-workoutForm.addEventListener("submit", function(event) {
+workoutForm.addEventListener("submit", function (event) {
     event.preventDefault();
 
     const activity = activityInput.value.trim();
@@ -99,7 +122,7 @@ workoutForm.addEventListener("submit", function(event) {
     }
 
 
-    
+
     if (note === "") {
         errorText.textContent = "Please enter a note";
         return;
@@ -125,7 +148,7 @@ workoutForm.addEventListener("submit", function(event) {
     render();
 
 
-    
+
     activityInput.value = "";
     minutesInput.value = "";
     noteInput.value = "";
@@ -133,10 +156,17 @@ workoutForm.addEventListener("submit", function(event) {
 
 
 
-
-clearBtn.addEventListener("click", function() {
+clearBtn.addEventListener("click", function () {
     workouts.splice(0, workouts.length);
     localStorage.removeItem("workouts");
     render();
     totalText.textContent = "No workouts yet";
+});
+
+
+
+removeLastBtn.addEventListener("click", function () {
+    workouts.pop();
+    save()
+    render()
 });
