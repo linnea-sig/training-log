@@ -41,7 +41,15 @@ function render() {
 
     for (let i = 0; i < workouts.length; i++) {
         const workoutLi = document.createElement("li");
-        const label = workouts[i].minutes > 30 ? "Long" : "Short";
+        let label = workouts[i].minutes > 30 ? "Long" : "Short";
+
+        if (label === "Long") {
+            workoutLi.classList.add("long");
+        };
+
+        if (label === "Short") {
+            workoutLi.classList.add("short");
+        };
 
         let kind = "";
 
@@ -78,7 +86,6 @@ function render() {
         workoutLi.appendChild(noteElement);
 
         workoutList.appendChild(workoutLi);
-
 
 
 
