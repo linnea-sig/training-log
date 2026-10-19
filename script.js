@@ -15,11 +15,28 @@ const totalText = document.querySelector("#total");
 
 
 let workouts = [];
+totalText.textContent = "No workouts yet";
+
+
+
+try {
+    const saved = localStorage.getItem("workouts");
+    workouts = JSON.parse(saved) || [];
+} catch (error) {
+    console.log("Could not read saved workouts");
+};
+
+function save () {
+    const workoutsText = JSON.stringify(workouts);
+    localStorage.setItem("workouts", workoutsText);
+};
 
 
 
 function render () {
     workoutList.textContent = "";
+    let totalCounter = 0;
+    let avrageCounter = 0;
 
     for (let i = 0; i < workouts.length; i++) {
         const workoutLi = document.createElement("li");
@@ -38,8 +55,16 @@ function render () {
         workoutLi.appendChild(noteElement);
 
         workoutList.appendChild(workoutLi);
+
+
+
+
+        totalCounter += Number(workouts[i].minutes);
+        avrageCounter = totalCounter/workouts.length;
+
+        totalText.textContent = `Total minutes of activity: ${totalCounter} min. Avrage activity duration: ${avrageCounter} min.`
     }
-}
+};
 
 render();
 
@@ -96,6 +121,7 @@ workoutForm.addEventListener("submit", function(event) {
     };
 
     workouts.push(savedWorkout);
+    save();
     render();
 
 
@@ -103,5 +129,5 @@ workoutForm.addEventListener("submit", function(event) {
     activityInput.value = "";
     minutesInput.value = "";
     noteInput.value = "";
-})
+});
 
