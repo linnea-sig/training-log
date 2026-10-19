@@ -36,7 +36,7 @@ function save () {
 function render () {
     workoutList.textContent = "";
     let totalCounter = 0;
-    let avrageCounter = 0;
+    let averageCounter = 0;
 
     for (let i = 0; i < workouts.length; i++) {
         const workoutLi = document.createElement("li");
@@ -60,9 +60,9 @@ function render () {
 
 
         totalCounter += Number(workouts[i].minutes);
-        avrageCounter = totalCounter/workouts.length;
+        averageCounter = totalCounter/workouts.length;
 
-        totalText.textContent = `Total minutes of activity: ${totalCounter} min. Avrage activity duration: ${avrageCounter} min.`
+        totalText.textContent = `Total minutes of activity: ${totalCounter} min. Average activity duration: ${averageCounter} min.`
     }
 };
 
@@ -131,3 +131,12 @@ workoutForm.addEventListener("submit", function(event) {
     noteInput.value = "";
 });
 
+
+
+
+clearBtn.addEventListener("click", function() {
+    workouts.splice(0, workouts.length);
+    localStorage.removeItem("workouts");
+    render();
+    totalText.textContent = "No workouts yet";
+});
