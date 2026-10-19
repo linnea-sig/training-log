@@ -1,4 +1,3 @@
-//1. Element
 const workoutForm = document.querySelector("#workoutForm");
 
 const activityInput = document.querySelector("#activity");
@@ -19,7 +18,32 @@ let workouts = [];
 
 
 
-//2. Data
+function render () {
+    workoutList.textContent = "";
+
+    for (let i = 0; i < workouts.length; i++) {
+        const workoutLi = document.createElement("li");
+        const label = workouts[i].minutes > 30 ? "Long" : "Short"; 
+
+        const titleElement = document.createElement("h4");
+        const minutesElement = document.createElement("p");
+        const noteElement = document.createElement("p");
+
+        titleElement.textContent = workouts[i].activity;
+        minutesElement.textContent = `Time: ${workouts[i].minutes} - ${label}`;
+        noteElement.textContent = workouts[i].note;
+
+        workoutLi.appendChild(titleElement);
+        workoutLi.appendChild(minutesElement);
+        workoutLi.appendChild(noteElement);
+
+        workoutList.appendChild(workoutLi);
+    }
+}
+
+render();
+
+
 workoutForm.addEventListener("submit", function(event) {
     event.preventDefault();
 
@@ -72,6 +96,7 @@ workoutForm.addEventListener("submit", function(event) {
     };
 
     workouts.push(savedWorkout);
+    render();
 
 
     
@@ -80,4 +105,3 @@ workoutForm.addEventListener("submit", function(event) {
     noteInput.value = "";
 })
 
-//3. Add a workout
